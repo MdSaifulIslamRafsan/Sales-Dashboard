@@ -1,4 +1,3 @@
-"use client";
 
 import { Filter, RotateCcw } from "lucide-react";
 import type { IFilters } from "@/lib/types";

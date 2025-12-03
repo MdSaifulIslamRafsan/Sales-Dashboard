@@ -1,10 +1,10 @@
-import React, { type JSX } from "react";
+import  { type JSX } from "react";
 import { Card, CardDescription, CardTitle } from "../ui/card";
 interface DashboardCardProps {
   title: string;
   value: string | number;
   icon: JSX.Element;
-  iconColor?: string; // optional, default color
+  iconColor?: string; 
 }
 const DashboardCard = ({
   title,

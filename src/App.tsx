@@ -8,6 +8,7 @@ import { useGetSalesQuery } from "./redux/features/sales/salesApi";
 import { Button } from "./components/ui/button";
 import FiltersPanel from "./components/FiltersPanel";
 import SalesDashboard from "./components/SalesDashboard";
+import SalesTable from "./components/SalesTable";
 
 function App() {
   const [showFilters, setShowFilters] = useState(false);
@@ -28,14 +29,7 @@ function App() {
   });
   const { data: salesData, isLoading } = useGetSalesQuery(filters);
 
-  const handleFiltersChange = (newFilters: Partial<IFilters>) => {
-    setFilters((prev) => ({
-      ...prev,
-      ...newFilters,
-      after: "",
-      before: "",
-    }));
-  };
+
 
   useEffect(() => {
     const getToken = async () => {
@@ -53,14 +47,70 @@ function App() {
     getToken();
   }, [tokenApi, dispatch]);
 
+  const handleFiltersChange = (newFilters: Partial<IFilters>) => {
+    setFilters((prev) => ({
+      ...prev,
+      ...newFilters,
+      after: "",
+      before: "",
+    }));
+  };
+
+  const handleSort = (sortBy: "date" | "price") => {
+    setFilters((prev) => ({
+      ...prev,
+      sortBy,
+      sortOrder:
+        prev.sortBy === sortBy
+          ? prev.sortOrder === "asc"
+            ? "desc"
+            : "asc"
+          : "asc",
+      after: "",
+      before: "",
+    }));
+  };
+
+  const handleNextPage = () => {
+    if (salesData?.pagination.after) {
+      setFilters((prev) => ({
+        ...prev,
+        after: salesData.pagination.after,
+        before: "",
+      }));
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (salesData?.pagination.before) {
+      setFilters((prev) => ({
+        ...prev,
+        before: salesData.pagination.before,
+        after: "",
+      }));
+    } else {
+      
+      setFilters((prev) => ({
+        ...prev,
+        after: "",
+        before: "",
+      }));
+    }
+  };
+
+  const isFirstPage = filters.after === "" && filters.before === "";
+  const hasNextPage = !!salesData?.pagination.after;
+  const hasPrevPage = !isFirstPage;
+
   if (isLoading) {
     return;
   }
 
+
   return (
     <main className="min-h-screen container px-4 mx-auto bg-background">
       <div className="flex gap-5 flex-col md:flex-row justify-between py-10">
-        {/* Header */}
+      
         <div className="flex items-center gap-3">
           <div className="p-2 bg-primary rounded-lg">
             <BarChart3 className="h-6 w-6 text-primary-foreground" />
@@ -74,7 +124,7 @@ function App() {
             </p>
           </div>
         </div>
-        {/*  Toggle Button  */}
+        
         <Button onClick={() => setShowFilters(!showFilters)}>
           <Filter size={18} />
           {showFilters ? "Hide Filters" : "Show Filters"}
@@ -87,6 +137,19 @@ function App() {
         onFiltersChange={handleFiltersChange}
       ></FiltersPanel>
       <SalesDashboard salesData={salesData}></SalesDashboard>
+       <div className="my-10 grid grid-cols-1  xl:grid-cols-2 gap-10">
+        <SalesTable
+          data={salesData.results.Sales}
+          sortBy={filters.sortBy}
+          sortOrder={filters.sortOrder}
+          onSort={handleSort}
+          onNextPage={handleNextPage}
+          onPrevPage={handlePrevPage}
+          hasNextPage={hasNextPage}
+          hasPrevPage={hasPrevPage}
+        />
+        
+      </div>
     </main>
   );
 }
