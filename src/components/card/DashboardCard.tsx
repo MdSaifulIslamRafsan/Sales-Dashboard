@@ -1,4 +1,4 @@
-import React, { type JSX } from "react";
+import  { type JSX } from "react";
 import { Card, CardDescription, CardTitle } from "../ui/card";
 interface DashboardCardProps {
   title: string;
