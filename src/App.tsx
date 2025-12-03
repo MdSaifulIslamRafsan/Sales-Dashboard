@@ -7,6 +7,7 @@ import { setUser } from "./redux/features/auth/authSlice";
 import { useGetSalesQuery } from "./redux/features/sales/salesApi";
 import { Button } from "./components/ui/button";
 import FiltersPanel from "./components/FiltersPanel";
+import SalesDashboard from "./components/SalesDashboard";
 
 function App() {
   const [showFilters, setShowFilters] = useState(false);
@@ -25,7 +26,8 @@ function App() {
     after: "",
     before: "",
   });
- const { data: salesData, isLoading } = useGetSalesQuery(filters);
+  const { data: salesData, isLoading } = useGetSalesQuery(filters);
+
   const handleFiltersChange = (newFilters: Partial<IFilters>) => {
     setFilters((prev) => ({
       ...prev,
@@ -34,8 +36,6 @@ function App() {
       before: "",
     }));
   };
-
- 
 
   useEffect(() => {
     const getToken = async () => {
@@ -86,6 +86,7 @@ function App() {
         filters={filters}
         onFiltersChange={handleFiltersChange}
       ></FiltersPanel>
+      <SalesDashboard salesData={salesData}></SalesDashboard>
     </main>
   );
 }
