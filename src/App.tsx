@@ -10,6 +10,10 @@ import FiltersPanel from "./components/FiltersPanel";
 import SalesDashboard from "./components/SalesDashboard";
 import SalesChart from "./components/SalesChart";
 import SalesTable from "./components/SalesTable";
+import FiltersPanelSkeleton from "./components/skeleton/FiltersPanelSkeleton";
+import SalesDashboardSkeleton from "./components/skeleton/SalesDashboardSkeleton";
+import SalesTableSkeleton from "./components/skeleton/SalesTableSkeleton";
+import SalesChartSkeleton from "./components/skeleton/SalesChartSkeleton";
 
 function App() {
   const [showFilters, setShowFilters] = useState(false);
@@ -96,14 +100,21 @@ function App() {
     }
   }, [salesData]);
 
-  
-
   const isFirstPage = filters.after === "" && filters.before === "";
   const hasNextPage = !!salesData?.pagination.after;
   const hasPrevPage = !isFirstPage;
 
   if (isLoading) {
-    return;
+    return (
+      <main className="container px-4 mx-auto py-10">
+        <FiltersPanelSkeleton />
+        <SalesDashboardSkeleton />
+        <div className="my-10 grid grid-cols-1 xl:grid-cols-2 gap-10">
+          <SalesTableSkeleton />
+          <SalesChartSkeleton />
+        </div>
+      </main>
+    );
   }
 
   return (
