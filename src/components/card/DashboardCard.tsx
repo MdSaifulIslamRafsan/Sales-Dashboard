@@ -1,10 +1,10 @@
-import  { type JSX } from "react";
+import React, { type JSX } from "react";
 import { Card, CardDescription, CardTitle } from "../ui/card";
 interface DashboardCardProps {
   title: string;
   value: string | number;
   icon: JSX.Element;
-  iconColor?: string; 
+  iconColor?: string;
 }
 const DashboardCard = ({
   title,
@@ -14,9 +14,7 @@ const DashboardCard = ({
 }: DashboardCardProps) => {
   return (
     <Card className="flex items-center justify-center gap-4 py-8">
-      <div
-        className={`${iconColor} flex items-center justify-center text-4xl`}
-      >
+      <div className={`${iconColor} flex items-center justify-center text-4xl`}>
         {icon}
       </div>
       <div className="text-center space-y-2">
@@ -28,3 +26,4 @@ const DashboardCard = ({
 };
 
 export default DashboardCard;
+

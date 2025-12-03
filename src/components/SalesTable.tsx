@@ -17,6 +17,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { ScrollArea, ScrollBar } from "./ui/scroll-area";
+import React from "react";
 
 interface SalesTableProps {
   data: ISale[];
@@ -29,7 +30,7 @@ interface SalesTableProps {
   hasPrevPage: boolean;
 }
 
- const SalesTable = ({
+const SalesTable = ({
   data,
   sortBy,
   sortOrder,
@@ -105,7 +106,7 @@ interface SalesTableProps {
                       {new Date(sale.date).toLocaleDateString("en-US", {
                         year: "numeric",
                         month: "short",
-                        day: "numeric"
+                        day: "numeric",
                       })}
                     </TableCell>
                     <TableCell>{sale?.price}</TableCell>
@@ -129,6 +130,6 @@ interface SalesTableProps {
       </CardContent>
     </Card>
   );
-}
+};
 
-export default SalesTable;
+export default React.memo(SalesTable);

@@ -8,6 +8,7 @@ const salesApi = baseApi.injectEndpoints({
         method: "GET",
         params,
       }),
+      providesTags: ["sales"],
     }),
   }),
 });

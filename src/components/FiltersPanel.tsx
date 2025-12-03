@@ -1,10 +1,10 @@
-
 import { Filter, RotateCcw } from "lucide-react";
 import type { IFilters } from "@/lib/types";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import React from "react";
 
 interface IFiltersPanelProps {
   filters: IFilters;
@@ -12,11 +12,11 @@ interface IFiltersPanelProps {
   onFiltersChange: (filters: Partial<IFilters>) => void;
 }
 
-export default function FiltersPanel({
+const FiltersPanel = ({
   filters,
   onFiltersChange,
   showFilters,
-}: IFiltersPanelProps) {
+}: IFiltersPanelProps) => {
   const handleReset = () => {
     onFiltersChange({
       startDate: "",
@@ -47,7 +47,6 @@ export default function FiltersPanel({
 
       <CardContent>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-        
           <div className="space-y-1">
             <Label htmlFor="startDate">Start Date</Label>
             <Input
@@ -58,7 +57,6 @@ export default function FiltersPanel({
             />
           </div>
 
-         
           <div className="space-y-1">
             <Label htmlFor="endDate">End Date</Label>
             <Input
@@ -69,7 +67,6 @@ export default function FiltersPanel({
             />
           </div>
 
-         
           <div className="space-y-1">
             <Label htmlFor="priceMin">Min Price</Label>
             <Input
@@ -81,7 +78,6 @@ export default function FiltersPanel({
             />
           </div>
 
-         
           <div className="space-y-1">
             <Label htmlFor="email">Customer Email</Label>
             <Input
@@ -93,7 +89,6 @@ export default function FiltersPanel({
             />
           </div>
 
-        
           <div className="space-y-1">
             <Label htmlFor="phone">Phone Number</Label>
             <Input
@@ -108,4 +103,5 @@ export default function FiltersPanel({
       </CardContent>
     </Card>
   );
-}
+};
+export default React.memo(FiltersPanel);
