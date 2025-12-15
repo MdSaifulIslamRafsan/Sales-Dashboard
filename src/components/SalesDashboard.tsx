@@ -10,19 +10,19 @@ import DashboardCard from "./card/DashboardCard";
 import React from "react";
 
 const SalesDashboard = ({ salesData }: { salesData: ISalesResponse }) => {
-  const totalRevenue = salesData.results.TotalSales.reduce(
-    (acc, d) => acc + d.totalSale,
+  const totalRevenue = salesData?.results?.TotalSales.reduce(
+    (acc, d) => acc + d?.totalSale,
     0
   );
-  const daysInRange = salesData.results.TotalSales.length;
+  const daysInRange = salesData?.results?.TotalSales?.length;
   const avgDailySales =
     daysInRange > 0 ? Math.round(totalRevenue / daysInRange) : 0;
-  const salesOnPage = salesData.results.Sales.length;
+  const salesOnPage = salesData?.results?.Sales?.length;
 
   const cards = [
     {
       title: "Total Revenue",
-      value: `$${totalRevenue.toLocaleString()}`,
+      value: `$${totalRevenue?.toLocaleString()}`,
       icon: <FaDollarSign />,
       iconColor: "text-yellow-400",
     },

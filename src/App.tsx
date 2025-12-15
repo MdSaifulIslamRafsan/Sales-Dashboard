@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { BarChart3, Filter } from "lucide-react";
 import type { IFilters } from "./lib/types";
 import { useTokenMutation } from "./redux/features/auth/authApi";
-import { useAppDispatch } from "./redux/hooks";
+import { useAppDispatch, useAppSelector } from "./redux/hooks";
 import { setUser } from "./redux/features/auth/authSlice";
 import { useGetSalesQuery } from "./redux/features/sales/salesApi";
 import { Button } from "./components/ui/button";
@@ -17,6 +17,7 @@ import SalesChartSkeleton from "./components/skeleton/SalesChartSkeleton";
 
 function App() {
   const [showFilters, setShowFilters] = useState(false);
+  const token = useAppSelector((state) => state.auth.token);
 
   const [tokenApi] = useTokenMutation();
   const dispatch = useAppDispatch();
@@ -32,7 +33,9 @@ function App() {
     after: "",
     before: "",
   });
-  const { data: salesData, isLoading } = useGetSalesQuery(filters);
+  const { data: salesData, isLoading } = useGetSalesQuery(filters, {
+    skip: !token,
+  });
 
   useEffect(() => {
     const getToken = async () => {
@@ -145,10 +148,10 @@ function App() {
         filters={filters}
         onFiltersChange={handleFiltersChange}
       ></FiltersPanel>
-      <SalesDashboard salesData={salesData}></SalesDashboard>
+      <SalesDashboard salesData={salesData ?? {}}></SalesDashboard>
       <div className="my-10 grid grid-cols-1  xl:grid-cols-2 gap-10">
         <SalesTable
-          data={salesData.results.Sales}
+          data={salesData?.results?.Sales ?? []}
           sortBy={filters.sortBy}
           sortOrder={filters.sortOrder}
           onSort={handleSort}
@@ -157,7 +160,7 @@ function App() {
           hasNextPage={hasNextPage}
           hasPrevPage={hasPrevPage}
         />
-        <SalesChart data={salesData.results.TotalSales} />
+        <SalesChart data={salesData?.results?.TotalSales ?? []} />
       </div>
     </main>
   );
